@@ -1071,6 +1071,15 @@ class Tools extends ToolsCommon
         $this->servico($servico, $uf, $this->tpAmb, $ignore);
         $ev = $this->tpEv($tpEvento);
         $descEvento = $ev->desc;
+
+        //$this->urlVersion --> variavel usada abaixo para montar XML, nao pode seta-la antes em outra classe
+        //                      pq ela esta como protected e na linha 1071 usando funcao this->servico seta ela novamente pra 4.00
+        if (!empty($eventos[$tpEvento])) {
+            $evt = $eventos[$tpEvento];
+            if (($uf == "MG") && ($evt['nome'] == 'envEventoCancNFe')){
+                $this->urlVersion = "1.00";
+            }
+        }
         $cnpj = $this->config->cnpj ?? '';
         $dt = new \DateTime(date("Y-m-d H:i:sP"), new \DateTimeZone($this->timezone));
         $dt->setTimezone(new \DateTimeZone($this->timezone));
